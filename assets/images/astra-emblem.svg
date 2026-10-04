@@ -1,0 +1,15 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" rx="32" fill="#07070A"/>
+  <circle cx="100" cy="100" r="80" fill="url(#paint0_radial)" stroke="#E11D48" stroke-width="3"/>
+  <path d="M100 30L125 80L175 88L140 130L150 180L100 155L50 180L60 130L25 88L75 80L100 30Z" fill="url(#paint1_linear)" stroke="#FF2A55" stroke-width="2"/>
+  <defs>
+    <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(100 100) rotate(90) scale(80)">
+      <stop stop-color="#881337" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#07070A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="paint1_linear" x1="100" y1="30" x2="100" y2="180" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E11D48"/>
+      <stop offset="1" stop-color="#881337"/>
+    </linearGradient>
+  </defs>
+</svg>

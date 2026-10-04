@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ASTRA — Stay Consistent With Your Dreams</title>
+  <meta name="description" content="Asta-inspired 2026 productivity and goal management web application. Train today. Build tomorrow.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ======================================================================
+       ONBOARDING SHELL (Steps 1 to 8)
+       ====================================================================== -->
+  <div id="onboarding-shell" style="display: none;">
+    <div id="onboarding-container" style="width: 100%;">
+      <div id="onboarding-bg" class="onboarding-bg"></div>
+      <div id="onboarding-card-body" class="onboarding-card">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MAIN APPLICATION DASHBOARD SHELL
+       ====================================================================== -->
+  <div id="app-shell" style="display: none;">
+    <div id="app">
+      <div class="main-wrapper">
+
+        <!-- DESKTOP SIDEBAR NAVIGATION (Visible on screens >= 1024px) -->
+        <aside class="desktop-sidebar">
+          <div class="sidebar-brand">
+            <img src="assets/branding/astra-mark.svg" alt="ASTRA Emblem" class="sidebar-logo-img" style="width: 36px; height: 36px; max-width: 36px; max-height: 36px; object-fit: contain; flex-shrink: 0;">
+            <div>
+              <div class="sidebar-logo-text">ASTRA</div>
+              <div class="sidebar-logo-sub">PRODUCTIVITY ENGINE</div>
+            </div>
+          </div>
+
+          <nav class="sidebar-nav">
+            <button class="nav-item active" data-tab="home">
+              <span>DASHBOARD</span>
+            </button>
+            <button class="nav-item" data-tab="goals">
+              <span>GOALS HUB</span>
+            </button>
+            <button class="nav-item" data-tab="tasks">
+              <span>TASKS</span>
+            </button>
+            <button class="nav-item" data-tab="focus">
+              <span>FOCUS MODE</span>
+            </button>
+            <button class="nav-item" data-tab="progress">
+              
+              <span>PROGRESS</span>
+            </button>
+            <button class="nav-item" data-tab="profile">
+              
+              <span>PROFILE</span>
+            </button>
+          </nav>
+
+          <div style="margin-top: auto; padding-top: 16px; border-top: 1px solid var(--glass-border);">
+            <button class="glass-btn glass-btn-primary glass-btn-block glass-btn-sm" onclick="window.AstaApp.openAddTaskModal()">
+              + NEW TASK
+            </button>
+          </div>
+        </aside>
+
+        <!-- MAIN CONTENT CANVAS -->
+        <main class="app-content">
+
+          <!-- SCREEN 1: DASHBOARD -->
+          <section id="screen-home" class="app-screen">
+            <div class="dashboard-header">
+              <div>
+                <h2 id="dash-greeting" class="greeting-text">Good morning</h2>
+                <div id="dash-date" class="date-text">Loading date...</div>
+              </div>
+              <button class="glass-btn glass-btn-primary glass-btn-sm" onclick="window.AstaApp.openAddTaskModal()">+ ADD TASK</button>
+            </div>
+
+            <!-- Hero Dream Card with 3D Dream Crystal -->
+            <div id="dash-hero-goal-card" class="glass-card hero-dream-card accent-red">
+              <!-- Rendered dynamically -->
+            </div>
+
+            <!-- Task Counters Grid -->
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div id="stat-total-tasks" class="stat-val">0</div>
+                <div class="stat-lbl">TOTAL TASKS</div>
+              </div>
+              <div class="stat-card">
+                <div id="stat-completed-tasks" class="stat-val" style="color: var(--green-muted);">0</div>
+                <div class="stat-lbl">COMPLETED</div>
+              </div>
+              <div class="stat-card">
+                <div id="stat-pending-tasks" class="stat-val" style="color: var(--gold-bright);">0</div>
+                <div class="stat-lbl">PENDING</div>
+              </div>
+              <div class="stat-card">
+                <div id="stat-overdue-tasks" class="stat-val" style="color: var(--red-bright);">0</div>
+                <div class="stat-lbl">OVERDUE</div>
+              </div>
+            </div>
+
+            <!-- Overall Progress & Next Deadline Grid -->
+            <div style="display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 24px;">
+              <div class="glass-card" style="margin-bottom: 0;">
+                <div class="card-title" style="font-size: 14px;">
+                  <span>OVERALL TRAINING PROGRESS</span>
+                  <span id="dash-overall-progress-text" style="color: var(--red-bright); font-weight: 900;">0%</span>
+                </div>
+                <div class="progress-container">
+                  <div class="progress-bar-bg">
+                    <div id="dash-overall-progress-bar" class="progress-bar-fill" style="width: 0%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="glass-card" style="margin-bottom: 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <span style="font-size: 11px; font-weight: 800; color: var(--text-2); letter-spacing: 1px;">NEXT DEADLINE</span>
+                  <span class="glass-chip chip-gold">UPCOMING</span>
+                </div>
+                <div id="dash-next-deadline-title" style="font-weight: 800; font-size: 16px; color: var(--text-1); margin-bottom: 2px;">
+                  No upcoming deadlines
+                </div>
+                <div id="dash-next-deadline-date" style="font-size: 12px; color: var(--text-2);"></div>
+              </div>
+            </div>
+
+            <!-- Next Mission Highlight Card -->
+            <div id="dash-next-mission-card" class="glass-card accent-gold" style="margin-bottom: 24px;">
+              <!-- Rendered dynamically -->
+            </div>
+
+            <!-- Today's Due Tasks -->
+            <div class="section-title">
+              <span>TODAY'S TASKS</span>
+              <span class="glass-chip chip-gold">DUE TODAY</span>
+            </div>
+            <div id="dash-today-tasks-list">
+              <!-- Rendered dynamically -->
+            </div>
+
+            <!-- Overdue Tasks -->
+            <div class="section-title">
+              <span>OVERDUE TASKS</span>
+              <span class="glass-chip chip-red">REQUIRES ATTENTION</span>
+            </div>
+            <div id="dash-overdue-tasks-list">
+              <!-- Rendered dynamically -->
+            </div>
+
+            <!-- Upcoming Tasks -->
+            <div class="section-title">
+              <span>UPCOMING TASKS</span>
+            </div>
+            <div id="dash-upcoming-tasks-list">
+              <!-- Rendered dynamically -->
+            </div>
+
+            <!-- Asta Motivation Card -->
+            <div class="glass-card" style="text-align: center; padding: 24px;">
+              <span class="glass-chip chip-gold" style="margin-bottom: 10px;">ASTA-INSPIRED</span>
+              <div id="dash-motivation-text" style="font-family: var(--font-display); font-size: 17px; font-weight: 700; line-height: 1.6; margin-bottom: 8px;">
+                "My magic is never giving up!"
+              </div>
+              <div id="dash-motivation-author" style="font-size: 11px; color: var(--gold-bright); font-weight: 800; letter-spacing: 1px;">
+                — ASTA PHILOSOPHY
+              </div>
+            </div>
+
+          </section>
+
+          <!-- SCREEN 2: GOALS HUB -->
+          <section id="screen-goals" class="app-screen" style="display: none;">
+            <div class="section-title" style="margin-top: 0;">
+              <span>GOALS HUB</span>
+              <button class="glass-btn glass-btn-primary glass-btn-sm" onclick="window.AstaApp.openAddGoalModal()">+ ADD GOAL</button>
+            </div>
+
+            <!-- 3D Grimoire Visual Anchor -->
+            <div class="glass-card" style="display: flex; align-items: center; gap: 20px; padding: 24px; margin-bottom: 24px;">
+              <div class="grimoire-3d">
+                <div class="grimoire-book">
+                  <div class="grimoire-spine"></div>
+                  <div class="grimoire-cover">
+                    <div class="grimoire-mark"></div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h3 style="font-family: var(--font-display); font-size: 18px; font-weight: 900; margin-bottom: 4px;">GRIMOIRE OF GOALS</h3>
+                <p style="font-size: 12px; color: var(--text-2); line-height: 1.5;">
+                  Organize long-term dreams into mid-term milestones and actionable short-term targets.
+                </p>
+              </div>
+            </div>
+
+            <div id="goals-tabs" class="glass-tabs">
+              <button class="glass-tab-btn active" data-goaltab="long" onclick="window.AstaApp.renderGoalsPage('long')">LONG TERM</button>
+              <button class="glass-tab-btn" data-goaltab="mid" onclick="window.AstaApp.renderGoalsPage('mid')">MID TERM</button>
+              <button class="glass-tab-btn" data-goaltab="short" onclick="window.AstaApp.renderGoalsPage('short')">SHORT TERM</button>
+            </div>
+
+            <div id="goals-list-container">
+              <!-- Rendered dynamically -->
+            </div>
+          </section>
+
+          <!-- SCREEN 3: TASKS PAGE -->
+          <section id="screen-tasks" class="app-screen" style="display: none;">
+            <div class="section-title" style="margin-top: 0;">
+              <span>ALL TASKS</span>
+              <button class="glass-btn glass-btn-primary glass-btn-sm" onclick="window.AstaApp.openAddTaskModal()">+ CREATE TASK</button>
+            </div>
+
+            <div id="tasks-tabs" class="glass-tabs">
+              <button class="glass-tab-btn active" data-taskfilter="all" onclick="window.AstaApp.renderTasksPage('all')">ALL</button>
+              <button class="glass-tab-btn" data-taskfilter="today" onclick="window.AstaApp.renderTasksPage('today')">TODAY</button>
+              <button class="glass-tab-btn" data-taskfilter="upcoming" onclick="window.AstaApp.renderTasksPage('upcoming')">UPCOMING</button>
+              <button class="glass-tab-btn" data-taskfilter="overdue" onclick="window.AstaApp.renderTasksPage('overdue')">OVERDUE</button>
+              <button class="glass-tab-btn" data-taskfilter="completed" onclick="window.AstaApp.renderTasksPage('completed')">COMPLETED</button>
+            </div>
+
+            <div id="all-tasks-container">
+              <!-- Rendered dynamically -->
+            </div>
+          </section>
+
+          <!-- SCREEN 4: FOCUS MODE (3D ANTI-MAGIC CORE) -->
+          <section id="screen-focus" class="app-screen" style="display: none;">
+            <div class="glass-card accent-red" style="text-align: center; padding: 36px 20px;">
+              <div class="section-title" style="justify-content: center; margin-top: 0; margin-bottom: 24px;">
+                <span>ASTRA DEEP FOCUS ZONE</span>
+              </div>
+
+              <!-- 3D Anti-Magic Core -->
+              <div class="core-3d-wrapper">
+                <div class="core-sphere"></div>
+                <div class="orbit-ring r1"></div>
+                <div class="orbit-ring r2"></div>
+              </div>
+
+              <!-- Focus Timer Presets -->
+              <div style="display: flex; gap: 8px; justify-content: center; margin: 24px 0 20px 0;">
+                <button class="neumorph-btn" style="padding: 8px 16px; font-size: 12px; font-weight: 800;" onclick="window.AstaApp.setFocusMinutes(25)">25 MIN</button>
+                <button class="neumorph-btn" style="padding: 8px 16px; font-size: 12px; font-weight: 800; border-color: var(--red-primary);" onclick="window.AstaApp.setFocusMinutes(45)">45 MIN</button>
+                <button class="neumorph-btn" style="padding: 8px 16px; font-size: 12px; font-weight: 800;" onclick="window.AstaApp.setFocusMinutes(60)">60 MIN</button>
+              </div>
+
+              <div id="focus-time-display" style="font-family: var(--font-display); font-size: 56px; font-weight: 900; letter-spacing: 2px; color: var(--text-1); margin-bottom: 12px;">
+                45:00
+              </div>
+
+              <p style="font-size: 13px; color: var(--text-2); margin-bottom: 24px;">
+                "One task. One direction. Turn off distractions and train."
+              </p>
+
+              <div style="display: flex; gap: 12px; max-width: 320px; margin: 0 auto;">
+                <button id="focus-start-btn" class="glass-btn glass-btn-primary" style="flex: 2;" onclick="window.AstaApp.toggleFocusTimer()">START FOCUS</button>
+                <button class="glass-btn glass-btn-secondary" style="flex: 1;" onclick="window.AstaApp.resetFocusTimer()">RESET</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- SCREEN 5: PROGRESS ANALYTICS -->
+          <section id="screen-progress" class="app-screen" style="display: none;">
+            <div class="section-title" style="margin-top: 0;">
+              <span>PROGRESS ANALYTICS</span>
+            </div>
+
+            <div class="glass-card" style="text-align: center; padding: 32px 20px;">
+              <div style="font-size: 10px; font-weight: 800; color: var(--text-2); letter-spacing: 1.5px; margin-bottom: 4px;">OVERALL COMPLETION METRIC</div>
+              <div id="prog-overall-pct" style="font-family: var(--font-display); font-size: 52px; font-weight: 900; color: var(--red-bright);">0%</div>
+            </div>
+
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div id="prog-total-count" class="stat-val">0</div>
+                <div class="stat-lbl">TOTAL TASKS</div>
+              </div>
+              <div class="stat-card">
+                <div id="prog-completed-count" class="stat-val" style="color: var(--green-muted);">0</div>
+                <div class="stat-lbl">COMPLETED</div>
+              </div>
+              <div class="stat-card">
+                <div id="prog-pending-count" class="stat-val" style="color: var(--gold-bright);">0</div>
+                <div class="stat-lbl">PENDING</div>
+              </div>
+              <div class="stat-card">
+                <div id="prog-overdue-count" class="stat-val" style="color: var(--red-bright);">0</div>
+                <div class="stat-lbl">OVERDUE</div>
+              </div>
+            </div>
+
+            <div class="section-title">
+              <span>GOALS BREAKDOWN</span>
+            </div>
+            <div id="prog-goals-breakdown" class="glass-card">
+              <!-- Rendered dynamically -->
+            </div>
+          </section>
+
+          <!-- SCREEN 6: PROFILE & SETTINGS -->
+          <section id="screen-profile" class="app-screen" style="display: none;">
+            <div class="glass-card" style="text-align: center; padding: 32px 20px;">
+              <div style="width: 84px; height: 84px; border-radius: 50%; overflow: hidden; margin: 0 auto 14px auto; border: 2px solid var(--red-bright); box-shadow: var(--shadow-glow-red);">
+                <img src="assets/images/profiles/Asta.jfif" alt="User Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+              <h2 id="profile-user-name" class="greeting-text" style="font-size: 24px;">User Name</h2>
+              <div id="profile-user-category" style="font-size: 13px; color: var(--gold-bright); font-weight: 800; margin-top: 4px;">Category</div>
+              <div id="profile-user-occupation" style="font-size: 12px; color: var(--text-2); margin-top: 2px;">Occupation</div>
+            </div>
+
+            <div class="glass-card" style="padding: 18px 16px; margin-top: -8px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                <div>
+                  <div style="font-size: 11px; letter-spacing: 0.12em; font-weight: 800; color: var(--text-2); text-transform: uppercase;">Appearance</div>
+                  <div style="font-size: 14px; font-weight: 700; color: var(--text-1); margin-top: 4px;">Theme</div>
+                </div>
+
+                <button id="theme-toggle-btn" class="theme-toggle" type="button" aria-label="Switch to minimal white theme">
+                  <span class="toggle-track">
+                    <span class="toggle-thumb"></span>
+                  </span>
+                  <span class="toggle-text">Dark</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="section-title">
+              <span>JOURNEY STATS</span>
+            </div>
+
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div id="profile-ltg-count" class="stat-val">0</div>
+                <div class="stat-lbl">LONG TERM</div>
+              </div>
+              <div class="stat-card">
+                <div id="profile-mtg-count" class="stat-val">0</div>
+                <div class="stat-lbl">MID TERM</div>
+              </div>
+              <div class="stat-card">
+                <div id="profile-stg-count" class="stat-val">0</div>
+                <div class="stat-lbl">SHORT TERM</div>
+              </div>
+              <div class="stat-card">
+                <div id="profile-tasks-count" class="stat-val">0</div>
+                <div class="stat-lbl">TOTAL TASKS</div>
+              </div>
+            </div>
+
+            <div class="section-title">
+              <span>DATA BACKUP & SYNC</span>
+            </div>
+
+            <div class="glass-card" style="margin-bottom: 20px;">
+              <div style="font-weight: 800; font-size: 15px; margin-bottom: 6px; color: var(--gold-bright);">DOWNLOAD & RESTORE JOURNEY</div>
+              <p style="font-size: 12px; color: var(--text-2); margin-bottom: 16px; line-height: 1.5;">
+                Download your goals, tasks, and settings as a file to easily backup or upload your data on any phone, tablet, or PC.
+              </p>
+              <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <button class="glass-btn glass-btn-primary" style="flex: 1; min-width: 140px;" onclick="window.AstaApp.exportData()">
+                  📥 DOWNLOAD BACKUP
+                </button>
+                <button class="glass-btn glass-btn-secondary" style="flex: 1; min-width: 140px;" onclick="document.getElementById('import-file-input').click()">
+                  📤 UPLOAD & RESTORE
+                </button>
+              </div>
+            </div>
+
+            <div class="section-title">
+              <span>SETTINGS & DANGER ZONE</span>
+            </div>
+
+            <div class="glass-card">
+              <div style="font-weight: 800; font-size: 15px; margin-bottom: 6px; color: #ef4444;">RESET MY JOURNEY</div>
+              <p style="font-size: 12px; color: var(--text-2); margin-bottom: 16px;">
+                Clear all goals, tasks, and personal settings to restart onboarding from the welcome screen.
+              </p>
+              <button class="glass-btn glass-btn-danger glass-btn-block" onclick="window.AstaApp.resetJourney()">RESET MY JOURNEY</button>
+            </div>
+          </section>
+
+          <!-- Hidden File Input for Data Import -->
+          <input type="file" id="import-file-input" accept=".json" style="display: none;" onchange="window.AstaApp.importData(event)">
+
+        </main>
+
+      </div>
+
+      <!-- MOBILE FLOATING GLASS NAVIGATION DOCK (Visible on screens < 1024px) -->
+      <nav class="mobile-bottom-nav">
+        <button class="nav-item active" data-tab="home">
+          <svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5V21a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>
+          <span>HOME</span>
+        </button>
+        <button class="nav-item" data-tab="goals">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+          <span>GOALS</span>
+        </button>
+        <button class="nav-item" data-tab="tasks">
+          <svg viewBox="0 0 24 24"><path d="m15 3 6 6-3 3-6-6z"/><path d="m12 6-7 7 6 6 7-7M5 13l-2 2 6 6 2-2"/></svg>
+          <span>TASKS</span>
+        </button>
+        <button class="nav-item" data-tab="focus">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <span>FOCUS</span>
+        </button>
+        <button class="nav-item" data-tab="profile">
+          <svg viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H4v2a4 4 0 0 0 4 4M16 6h4v2a4 4 0 0 1-4 4M12 13v5M8 21h8M9 18h6"/></svg>
+          <span>PROFILE</span>
+        </button>
+      </nav>
+
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       GLASS MODAL DIALOGS
+       ====================================================================== -->
+
+  <!-- Add Task Modal -->
+  <div id="modal-add-task" class="glass-modal-overlay">
+    <div class="glass-modal-content">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 style="font-family: var(--font-display); font-size: 20px; font-weight: 900;">CREATE NEW TASK</h3>
+        <button class="glass-btn glass-btn-secondary glass-btn-sm" onclick="window.AstaApp.closeAddTaskModal()">✕</button>
+      </div>
+      <form id="form-modal-add-task">
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-size: 11px; font-weight: 800; color: var(--text-2); text-transform: uppercase; margin-bottom: 6px;">Task Title *</label>
+          <input type="text" id="modal-task-title" class="glass-input" placeholder="e.g. Solve 2 LeetCode Array problems" required>
+        </div>
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-size: 11px; font-weight: 800; color: var(--text-2); text-transform: uppercase; margin-bottom: 6px;">Link to Goal</label>
+          <select id="modal-task-goal" class="glass-select">
+            <option value="">No linked goal</option>
+          </select>
+        </div>
+        <div style="display: flex; gap: 12px; margin-bottom: 20px;">
+          <div style="flex: 1;">
+            <label style="display: block; font-size: 11px; font-weight: 800; color: var(--text-2); text-transform: uppercase; margin-bottom: 6px;">Priority</label>
+            <select id="modal-task-priority" class="glass-select">
+              <option value="Low">Low</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+          <div style="flex: 1;">
+            <label style="display: block; font-size: 11px; font-weight: 800; color: var(--text-2); text-transform: uppercase; margin-bottom: 6px;">Deadline</label>
+            <input type="date" id="modal-task-date" class="glass-input">
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px;">
+          <button type="button" class="glass-btn glass-btn-secondary" style="flex: 1;" onclick="window.AstaApp.closeAddTaskModal()">CANCEL</button>
+          <button type="submit" class="glass-btn glass-btn-primary" style="flex: 2;">CREATE TASK</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Goal Modal -->
+  <div id="modal-add-goal" class="glass-modal-overlay">
+    <div class="glass-modal-content">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 style="font-family: var(--font-display); font-size: 20px; font-weight: 900;">CREATE NEW GOAL</h3>
+        <button class="glass-btn glass-btn-secondary glass-btn-sm" onclick="window.AstaApp.closeAddGoalModal()">✕</button>
+      </div>
+      <form id="form-modal-add-goal">
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-size: 11px; font-weight: 800; color: var(--text-2); text-transform: uppercase; margin-bottom: 6px;">Goal Title *</label>
+          <input type="text" id="modal-goal-title" class="glass-input" placeholder="e.g. Master PyTorch Deep Learning" required>
+        </div>
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-size: 11px; font-weight: 800; color: var(--text-2); text-transform: uppercase; margin-bottom: 6px;">Goal Term Type</label>
+          <select id="modal-goal-type" class="glass-select">
+            <option value="long">Long Term (Years)</option>
+            <option value="mid">Mid Term (Months)</option>
+            <option value="short">Short Term (Weeks)</option>
+          </select>
+        </div>
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-size: 11px; font-weight: 800; color: var(--text-2); text-transform: uppercase; margin-bottom: 6px;">Target Deadline</label>
+          <input type="date" id="modal-goal-date" class="glass-input">
+        </div>
+        <div style="display: flex; gap: 12px;">
+          <button type="button" class="glass-btn glass-btn-secondary" style="flex: 1;" onclick="window.AstaApp.closeAddGoalModal()">CANCEL</button>
+          <button type="submit" class="glass-btn glass-btn-primary" style="flex: 2;">CREATE GOAL</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
