@@ -1,4 +1,4 @@
-# ASTRA Asset Pack
+# ASTA
 
 Frontend asset pack for the ASTRA goal-training app.
 
